@@ -1,5 +1,4 @@
 import numpy as np
-from typing import Optional
 
 from rocketsolver.models.rocket.stage import RocketStage
 
