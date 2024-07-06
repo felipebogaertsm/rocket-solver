@@ -20,6 +20,7 @@ from rocketsolver.models.propulsion.structure.chamber import (
 from rocketsolver.models.propulsion.propellants.solid import KNSB_NAKKA
 from rocketsolver.models.recovery import Recovery
 from rocketsolver.models.rocket import Rocket
+from rocketsolver.models.rocket.stage import RocketStage
 from rocketsolver.models.materials.metals import Steel, Al6061T6
 from rocketsolver.models.materials.polymers import EPDM
 from rocketsolver.models.propulsion.thermals import ThermalLiner
@@ -119,11 +120,15 @@ def main():
         length=2900, drag_coefficient=0.75, outer_diameter=0.12
     )
 
-    rocket = Rocket(
+    stage_1 = RocketStage(
         propulsion=motor,
         recovery=recovery,
         fuselage=fuselage,
         mass_without_motor=12.7,
+    )
+
+    rocket = Rocket(
+        stages=[stage_1, stage_1],
     )
 
     # IB coupled simulation:
@@ -137,7 +142,7 @@ def main():
     )
     simulation = InternalBallisticsCoupled(rocket=rocket, params=params)
 
-    (ib_operation, ballistic_operation) = simulation.run()
+    results = simulation.run()
 
     simulation.print_results()
 
