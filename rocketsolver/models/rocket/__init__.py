@@ -16,6 +16,16 @@ class Rocket:
         """
         self.stages: list[RocketStage] = stages or []
 
+    @property
+    def stage_count(self) -> int:
+        """
+        Get the number of stages of the rocket.
+
+        Returns:
+            int: The number of stages of the rocket.
+        """
+        return len(self.stages)
+
     def get_launch_mass(self) -> float:
         """
         Calculates the total mass of the rocket at launch.
@@ -24,13 +34,10 @@ class Rocket:
             float: The total mass of the rocket at launch, in kg.
         """
         return np.sum(
-            np.ndarray(
-                [
-                    stage.mass_without_motor
-                    + stage.propulsion.get_launch_mass()
-                    for stage in self.stages
-                ]
-            )
+            [
+                stage.mass_without_motor + stage.propulsion.get_launch_mass()
+                for stage in self.stages
+            ]
         )
 
     def get_dry_mass(self) -> float:
@@ -41,10 +48,8 @@ class Rocket:
             float: The dry mass of the rocket, in kg.
         """
         return np.sum(
-            np.ndarray(
-                [
-                    stage.mass_without_motor + stage.propulsion.get_dry_mass()
-                    for stage in self.stages
-                ]
-            )
+            [
+                stage.mass_without_motor + stage.propulsion.get_dry_mass()
+                for stage in self.stages
+            ]
         )
